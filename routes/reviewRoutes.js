@@ -19,7 +19,7 @@ router
   .route("/:id")
   .patch(
     // authController.protect,
-    upload.upload.single("image"),
+    upload.upload.single("profilePicture"),
     reviewController.updateComment,
     deleteFile,
     reviewController.getComment
