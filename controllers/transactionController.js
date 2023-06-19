@@ -700,12 +700,6 @@ const startRunningDeposit = async (data, id, next) => {
     await Transaction.create(data);
   }
 
-  function logHelloWorld() {
-    console.log("Hello, World!");
-  }
-
-  setInterval(logHelloWorld, 30000);
-
   const earning = Number((data.amount * data.percent) / 100).toFixed(2);
 
   // const planDuration = 4 * 60 * 1000;
@@ -806,12 +800,6 @@ const startRunningDeposit = async (data, id, next) => {
 
 exports.checkActive = catchAsync(async (req, res, next) => {
   const activeDeposits = await Active.find();
-
-  function logHelloWorld() {
-    console.log("Hello, World!");
-  }
-
-  setInterval(logHelloWorld, 30000);
 
   activeDeposits.forEach((el, index) => {
     setTimeout(async () => {
