@@ -493,7 +493,7 @@ const prepareEmail = async (user, template, secondUser) => {
   const content = email.content
     .replace("{{company-name}}", company.companyName)
     .replace("{{fullName}}", `${user.fullName}`)
-    .replace("{{username}}", `${secondUser.username}`);
+    .replace("{{username}}", `${user.username}`);
   const companyInfo = {
     email: company.systemEmail,
     username: user.username,
@@ -531,5 +531,5 @@ const prepareEmail = async (user, template, secondUser) => {
     subject: email.title,
   };
 
-  await Notification.create(form);
+  // await Notification.create(form);
 };
