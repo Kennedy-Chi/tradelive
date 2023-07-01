@@ -60,12 +60,12 @@ exports.editUser = catchAsync(async (req, res, next) => {
   let files = [];
   const oldUser = await User.findById(req.params.id);
 
-  if (req.files.profilePicture) {
-    if (req.files.profilePicture) {
+  if (req.file) {
+    if (req.file.profilePicture) {
       req.body.profilePicture = req.files.profilePicture[0].filename;
       files.push(oldUser.profilePicture);
     }
-    if (req.files.idPicture) {
+    if (req.file.idPicture) {
       req.body.idPicture = req.files.idPicture[0].filename;
       files.push(oldUser.idPicture);
     }
@@ -83,24 +83,26 @@ exports.editUser = catchAsync(async (req, res, next) => {
     return next(new AppError("No user found with that ID", 404));
   }
 
-  let totalBalance = 0;
-  const wallets = JSON.parse(req.body.wallets);
-  wallets.forEach((el) => {
-    totalBalance += el.balance;
-  });
+  if (req.body.wallets) {
+    let totalBalance = 0;
+    const wallets = JSON.parse(req.body.wallets);
+    wallets.forEach((el) => {
+      totalBalance += el.balance;
+    });
 
-  wallets.forEach(async (el) => {
-    const form = {
-      balance: el.balance,
-      walletAddress: el.walletAddress,
-    };
-    await Wallet.findByIdAndUpdate(el._id, form);
-  });
+    wallets.forEach(async (el) => {
+      const form = {
+        balance: el.balance,
+        walletAddress: el.walletAddress,
+      };
+      await Wallet.findByIdAndUpdate(el._id, form);
+    });
 
-  await User.updateOne(
-    { _id: req.params.id },
-    { totalBalance: totalBalance * 1 }
-  );
+    await User.updateOne(
+      { _id: req.params.id },
+      { totalBalance: totalBalance * 1 }
+    );
+  }
 
   req.fileNames = files;
 
